@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>exo</title>
+		<!--<script type="text/javascript" src="jquery-3.5.1.min.js"></script>-->
+		<script src="assets/js/jquery-3.5.1.min.js"></script>
+		
+
+	</head>
+	<script>
+
+		var donnees = {
+						"Québec": ["Montréal", "Laval", "Longueuil","Québec","Sherbrooke" ],
+						"Ontario": ["London", "Toronto", "Ottawa", "Bancroft","Belleville", "Barrie", "Blind River"],
+						"Alberta":["Athabasca", "Banff", "Castor"]
+					};
+
+		var automobiles = {
+							"Acura": ["MDX", "RDX", "TL", "RL" ],
+							"Audi": ["A4", "A6", "A8", "S4", "S6" ],
+							"BMW": ["M3", "M5", "M6", "Z4" ],
+							"Chevrolet": ["Aveo", "Cobalt", "Colorado", "Corvette", "Equinox" ],
+							"Chrysler": ["300", "Aspen", "PT Cruser", "Sebring" ],
+							"Ford": ["Edge", "Escape", "Fusion", "Focus" ],
+							"Honda": ["Accord", "Civic", "Element", "Fit" ],
+							"Hyundai": ["Accent", "Elantra", "Tiburon", "Sonata", "Tucson" ]
+						};
+
+	
+							
+
+
+		function app(){
+			
+			var province = document.formulaire.provinces;  //select 1
+			indexChoisi = province.selectedIndex;
+			provinceChoisie = province.options[indexChoisi].text;
+
+			var city = document.formulaire.villes;			//select 2
+			city.options.length = 0;                //vide la liste avant reconstruction pour eviter de cumuler 
+
+			city.options[0] = new Option("Choisir la ville...");
+			var villes = donnees[provinceChoisie];
+			for(ville of villes){
+				city.options[city.options.length] = new Option(ville);
+
+			}
+			
+		}
+
+		/******************************************************************/
+
+			function automobile(){
+			var ul = document.getElementById("auto");
+				
+				for(marque in automobiles){
+					x = document.createElement("LI");
+					x.textContent = marque; 
+
+					var tabModel = automobiles[marque];
+					y = document.createElement("OL");
+
+					for(model of tabModel){
+						z = document.createElement("LI");
+						z.textContent = model;
+						y.appendChild(z);
+						x.appendChild(y);
+					}
+					ul.appendChild(x);
+				}
+
+				app2();
+			}
+
+
+	/******************************************************************/
+
+			function app2(){
+				var marqueAuto = document.formulaire2.marqueAuto;
+					for(marque in automobiles){
+						marqueAuto.options[marqueAuto.options.length] = new Option(marque);
+					}
+
+			}
+
+
+			function app3(){
+				var marqueAuto = document.formulaire2.marqueAuto; // Select1
+				var modelAuto = document.formulaire2.modelAuto;	  // Select 2
+
+				modelAuto.options.length = 0;       // Vidange du Select pour éviter la répétion des options.
+				modelAuto.options[0] = new Option("Choisir modèle...");
+				var indexChoisi = marqueAuto.selectedIndex;
+
+				var marque = marqueAuto.options[indexChoisi].text;   
+				var modeles = automobiles[marque];					 // ceci est un tableau
+
+					for(modele of modeles){
+
+						modelAuto.options[modelAuto.options.length] = new Option(modele);
+
+					}
+
+			}
+
+
+
+// Evenement jquery.
+$(document).ready(function(){
+	$('#exo').click(function(){
+		alert('Bienvenue, Jquery en marche...!');
+		$('#exo').css('color', 'red');
+		$('p:first').css('background-color', 'blue');
+
+			//$('#content1').html('ello');
+		
+		})
+
+	
+})
+
+
+
+fetch("./dbfilms00.json")
+			.then(function(resp){
+				return resp.json();          // equivalent  .then(resp => resp.json())
+			})
+
+			.then(function(data){
+					contenu = "";
+				for(film of data.movies){
+					//if(film.title == 'Beetlejuice'){ film.title ='Beetlejuice001'; console.log(film.title);}
+					contenu += "<br/>"+film.title;
+					
+					}
+					$('#content1').html(contenu);
+			});
+
+
+
+
+
+
+	</script>
+
+	<body onload="automobile();">
+
+		<h1 id="exo" >EXERCICE JSON - JQUERY : SELECT && LISTE</h1>
+
+		<p onclick="$('#formulaire').toggle();"> Click ici. Le second "<b>select</b>" sera construit en fonction du choix dans le premier.</p>
+
+	<form name="formulaire" id="formulaire">
+		<select name="provinces"  onchange="app();">
+			<option value="">Choisir province...</option>
+			<option value="">Québec</option>
+			<option value="">Ontario</option>
+			<option value="">Alberta</option>
+		</select>
+		<select name="villes">
+			<option value="">Choisir une province d'abord</option>
+		</select>
+	</form> <br/>
+<br/>****************************************************************************
+	<h4  onclick="$('#auto').toggle();"> Click ici. CRÉATION DE 2 LISTES AUTOMATIQUES, L'UN DEPENDANT DE L'AUTRE</h4>
+		<ul id ="auto">
+		</ul>
+<br/>****************************************************************************
+	<h4>CRÉATION DE 2 SELECT AUTOMATIQUES, L'UN DEPENDANT DE L'AUTRE</h4>
+
+	<form name="formulaire2">
+		<select name="marqueAuto"  onchange="app3();">
+			<option value="">Choisir une marque...</option>
+			
+		</select>
+		<select name="modelAuto">
+			<option value="">Choisir une marque d'abord</option>
+		</select>
+	</form> <br/>
+
+<div id="content1"></div>
+
+	</body>
+</html>
