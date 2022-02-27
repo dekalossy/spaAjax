@@ -1,7 +1,19 @@
+
+@font-face {
+	font-family: "Poppins-Regular.ttf";
+	src: url('../fonts/Poppins-Regular.ttf');
+}
+@font-face {
+	font-family: "Poppins-Medium.ttf";
+	font-style: italic;
+	src: url('../fonts/Poppins-Italic.ttf');
+}
+
+
 body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    color: #333;
-    background-color: #363f50;
+    color: rgb(7, 7, 7);
+    background-color: #FF5733;
+    font-family: 'Poppins', sans-serif, Helvetica,Arial,sans-serif;
 }
 
 
